@@ -71,7 +71,7 @@ line up, print a `ü`. The sequence is:
 ### `python` Example
 
     test("a_up_b", 80, 25, 40, 13, "A\x1b[Aü")
-         .assert().size(80,25)
+         .claim().size(80,25)
          .expect().
          .cpos(42,12)
          .char(40,13,'A')
@@ -85,8 +85,9 @@ the character matrix, the initial cursor position, and the sequence under test.
 Size and positions are always (X,Y) starting at (0,0) at the top-left of the
 matrix.
 
-The method `assert` make the following tests abort the test, while `expect`
-only produces a warning unless the test cannot be performed.
+The method `claim` make the following tests abort the test, while `expect`
+only produces a warning unless the test cannot be performed. In most testing
+frameworks, `claim` is called `assert`, but that is a reserved word in `python`.
 
 `cpos` checks the final cursor position, `char` checks if a certain ASCII
 character is at the given position. `uc` does the same for unicode code
