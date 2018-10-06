@@ -33,6 +33,13 @@ class CheckSize:
         self.w= w
         self.h=h
 
+class CheckChar:
+    def __init__(self,error,x,y,c):
+        self.error = error
+        self.x = x
+        self.y = y
+        self.c = c
+
 class TestBuilder:
     def __init__(self, name, w, h, x, y, seq):
         self.name = name
@@ -59,6 +66,10 @@ class TestBuilder:
 
     def cpos(self,x,y):
         self.checks.append(CheckCPos(self.error,x,y))
+        return self
+
+    def char(self,x,y,c):
+        self.checks.append(CheckChar(self.error,x,y,c))
         return self
 
     def generate(self, generator):
