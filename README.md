@@ -75,7 +75,7 @@ line up, print a `ü`. The sequence is:
          .expect().
          .cpos(42,12)
          .char(40,13,'A')
-         .attr(40,13,None)
+         .attr(40,13,'')
          .uc(41,12,0xfc)
          .bg_def(41,12)
          .fg_def(41,12)
@@ -103,3 +103,31 @@ The tests are declared via the [*builder*
 pattern](https://en.wikipedia.org/wiki/Builder_pattern). As `python3` supports
 UTF-8 as the default encoding of source files, the character sequence can be
 provided directly.
+
+# Implementation Notes
+
+## Attributes
+
+As the test pattern generator generates the attributes as a 13 bit number
+instead of e.g. drawing the individual bits from separate random numbers, the
+mapping of the bits to XTerm's attribute needs to be fixed. The following table
+lists this mapping.
+
+| Bit n| Attribute    |Code| Description                      |
+|-----:|:-------------|:--:| :------------------------------- |
+|    0 | inverse      |  i | Swap foreground/background colors|
+|    1 | underline    |  u | <u>Underline font</u>            |
+|    2 | bold         |  b | **Bold font**                    |
+|    3 | blink        |  l | Blinking character               |
+|    4 | background   |  c | Background color has been set    |
+|    5 | foreground   |  f | Foreground color has been set    |
+|    6 | protected    |  p | Character cannot be overwritten  |
+|    7 | drawn        |  d | Cell will be copied when selected|
+|    8 | faint        |  a | Faint font                       |
+|    9 | italic       |  t | *Italic font*                    |
+|    10| strikeout    |  s | Draw line through character      |
+|    11| double under |  w | Double underline                 |
+|    12| invisible    |  v | Character is there, but not drawn|
+
+*Bit n* is to interpreted as `1 << n` in C notation. *Code* refers to the
+character that has to be passed to `.attr` to check for that attribute.

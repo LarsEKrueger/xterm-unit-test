@@ -40,6 +40,13 @@ class CheckChar:
         self.y = y
         self.c = c
 
+class CheckAttr:
+    def __init__(self,error,x,y,a):
+        self.error = error
+        self.x = x
+        self.y = y
+        self.a = a
+
 class TestBuilder:
     def __init__(self, name, w, h, x, y, seq):
         self.name = name
@@ -70,6 +77,10 @@ class TestBuilder:
 
     def char(self,x,y,c):
         self.checks.append(CheckChar(self.error,x,y,c))
+        return self
+
+    def attr(self,x,y,a):
+        self.checks.append(CheckAttr(self.error,x,y,a))
         return self
 
     def generate(self, generator):
