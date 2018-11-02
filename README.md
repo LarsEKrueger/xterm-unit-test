@@ -54,7 +54,7 @@ Two options are most convenient to define the DSL: `python` and `M4`. `python`
 has the advantage that more people are familiar with it, `M4` has the
 advantage that XTerm already uses it (`automake`/`autoconf` are based on
 `M4`).
-
+https://github.com/LarsEKrueger/xterm-unit-test
 `M4` is a macro processor, like the `C` preprocessor, but more powerful.
 Unfortunately, it does not support multi-byte characters very well.
 
@@ -131,3 +131,12 @@ lists this mapping.
 
 *Bit n* is to interpreted as `1 << n` in C notation. *Code* refers to the
 character that has to be passed to `.attr` to check for that attribute.
+
+## XTerm tests
+
+The tests for xterm are implemented in the folder `xterm` using `CMake`. This will
+
+* download xterm to `download/xterm-<version>.tar.gz`
+* extract xterm to `build/xterm`
+* compile the test suite in `xterm`
+* run the tests
