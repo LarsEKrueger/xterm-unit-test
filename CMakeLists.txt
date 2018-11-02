@@ -29,14 +29,31 @@ add_custom_target(XtermArchive
   )
 
 # Unpack the archive when necessary
+set(XTERM_SOURCE_DIR ${CMAKE_BINARY_DIR}/xterm-${XTERM_VERSION})
 add_custom_command(
-  OUTPUT ${CMAKE_BINARY_DIR}/xterm-${XTERM_VERSION}/configure.sh
+  OUTPUT ${XTERM_SOURCE_DIR}/configure.sh
   COMMAND tar -f ${CMAKE_BINARY_DIR}/../download/xterm-${XTERM_VERSION}.tar.gz -C ${CMAKE_BINARY_DIR} -x -z
   DEPENDS XtermArchive
 )
-add_custom_target(XtermSource
-  DEPENDS ${CMAKE_BINARY_DIR}/xterm-${XTERM_VERSION}/configure.sh
+add_custom_target(XtermUnpack
+  DEPENDS ${XTERM_SOURCE_DIR}/configure.sh
 )
 
+# Build the basic files
+add_custom_command(
+  OUTPUT ${XTERM_SOURCE_DIR}/VTparse.hin
+  OUTPUT ${XTERM_SOURCE_DIR}/Tekparse.hin
+  COMMAND gawk "'/^CASE_/{printf\"#define" "%s" "%d\\n\",\$\$1,n++}'" <${XTERM_SOURCE_DIR}/VTparse.def >${XTERM_SOURCE_DIR}/VTparse.hin
+  COMMAND gawk "'/^CASE_/{printf\"#define" "%s" "%d\\n\",\$\$1,n++}'" <${XTERM_SOURCE_DIR}/Tekparse.def >${XTERM_SOURCE_DIR}/Tekparse.hin
+  DEPENDS ${XTERM_SOURCE_DIR}/VTparse.def
+  DEPENDS ${XTERM_SOURCE_DIR}/Tekparse.def
+  DEPENDS XtermUnpack
+)
+add_custom_target(XtermSource
+  DEPENDS ${XTERM_SOURCE_DIR}/VTparse.hin
+  DEPENDS ${XTERM_SOURCE_DIR}/Tekparse.hin
+)
+
+# Build and run the tests
 enable_testing()
 add_subdirectory(xterm)

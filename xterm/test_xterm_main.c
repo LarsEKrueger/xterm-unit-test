@@ -20,6 +20,23 @@
 
 #include <stdlib.h>
 
+void
+Exit(int n) {
+}
+
+int
+nonblocking_wait(void) {
+}
+
+int
+kill_process_group(int pid, int sig) {
+
+}
+
+int
+GetBytesAvailable(int fd) {
+}
+
 int main() {
 
 }

@@ -16,11 +16,55 @@
 #
 # Xterm test rig CMake file
 
-add_executable(test_xterm
-  test_xterm_main.c)
+include(FindX11)
+include(FindCurses)
 
+# Build the test executable
+add_executable(test_xterm
+  test_xterm_main.c
+  ${XTERM_SOURCE_DIR}/data.c
+  ${XTERM_SOURCE_DIR}/util.c
+  ${XTERM_SOURCE_DIR}/screen.c
+  ${XTERM_SOURCE_DIR}/linedata.c
+  ${XTERM_SOURCE_DIR}/scrollbar.c
+  ${XTERM_SOURCE_DIR}/button.c
+  ${XTERM_SOURCE_DIR}/cursor.c
+  ${XTERM_SOURCE_DIR}/misc.c
+  ${XTERM_SOURCE_DIR}/charproc.c
+  ${XTERM_SOURCE_DIR}/VTPrsTbl.c
+  ${XTERM_SOURCE_DIR}/TekPrsTbl.c
+  ${XTERM_SOURCE_DIR}/cachedGCs.c
+  ${XTERM_SOURCE_DIR}/Tekproc.c
+  ${XTERM_SOURCE_DIR}/xstrings.c
+  ${XTERM_SOURCE_DIR}/menu.c
+  ${XTERM_SOURCE_DIR}/input.c
+  ${XTERM_SOURCE_DIR}/charsets.c
+  ${XTERM_SOURCE_DIR}/print.c
+  ${XTERM_SOURCE_DIR}/fontutils.c
+  ${XTERM_SOURCE_DIR}/xtermcap.c
+  ${XTERM_SOURCE_DIR}/tabs.c
+  ${XTERM_SOURCE_DIR}/doublechr.c
+  ${XTERM_SOURCE_DIR}/ptydata.c
+  ${XTERM_SOURCE_DIR}/version.c
+)
+
+target_include_directories(test_xterm
+  PRIVATE ${XTERM_SOURCE_DIR}
+)
+
+target_link_libraries(test_xterm
+  ${X11_ICE_LIB}
+  ${X11_X11_LIB}
+  ${X11_Xt_LIB}
+  ${X11_Xmu_LIB}
+  Xaw7
+  ${CURSES_LIBRARY}
+)
+
+# Make it depend on having the XTerm sources
 add_dependencies(test_xterm
   XtermSource)
+
 
 add_test(
   NAME test_xterm
